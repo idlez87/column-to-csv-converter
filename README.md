@@ -18,7 +18,9 @@ This tool converts column data into a comma-separated list.
 
 ### Input Data:
 Column 1
+
 Column 2
+
 Column 3
 
 ### Input Data:
