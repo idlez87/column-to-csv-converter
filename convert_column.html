@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tools: Convert Column to Comma Separated List</title>
+    <meta name="description" content="A tool to convert a column of values into a comma-separated list with customizable prefixes and suffixes.">
+    <meta name="keywords" content="tools, column, comma separated list, converter, prefix, suffix, delimiter">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .input-group input[type="text"] {
+            width: 200px;
+        }
+        .auto-fill-group label {
+            margin-right: 10px;
+        }
+        .auto-fill-group input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function autoFill() {
+            // Get the input textboxes
+            var itemPrefixTextBox = document.getElementById("item-prefix");
+            var itemSuffixTextBox = document.getElementById("item-suffix");
+            var resultPrefixTextBox = document.getElementById("result-prefix");
+            var resultSuffixTextBox = document.getElementById("result-suffix");
+            var autoFillCheckbox = document.getElementById("auto-fill-checkbox");
+
+            if (autoFillCheckbox.checked) {
+                // Auto-fill the textboxes
+                itemPrefixTextBox.value = "'";
+                itemSuffixTextBox.value = "'";
+                resultPrefixTextBox.value = "(";
+                resultSuffixTextBox.value = ")";
+            } else {
+                // Clear the textboxes
+                itemPrefixTextBox.value = "";
+                itemSuffixTextBox.value = "";
+                resultPrefixTextBox.value = "";
+                resultSuffixTextBox.value = "";
+            }
+        }
+
+        function convertToCustomSeparatedList() {
+            // Get the input text area
+            var inputTextArea = document.getElementById("input-text");
+
+            // Get the output text area
+            var outputTextArea = document.getElementById("output-text");
+
+            // Get the delimiter from the input field
+            var delimiter = document.getElementById("delimiter").value;
+
+            // Get the item prefix from the input field
+            var itemPrefix = document.getElementById("item-prefix").value;
+
+            // Get the item suffix from the input field
+            var itemSuffix = document.getElementById("item-suffix").value;
+
+            // Get the result prefix from the input field
+            var resultPrefix = document.getElementById("result-prefix").value;
+
+            // Get the result suffix from the input field
+            var resultSuffix = document.getElementById("result-suffix").value;
+
+            // Split the input text by lines
+            var lines = inputTextArea.value.split('\n');
+
+            // Initialize an empty array to store column values
+            var columnValues = [];
+
+            // Iterate over each line
+            for (var i = 0; i < lines.length; i++) {
+                // Trim leading and trailing whitespace from each line
+                var line = lines[i].trim();
+
+                // Ignore empty lines
+                if (line !== '') {
+                    // Split the input data into lines
+					var columnValue = line.split('\n');
+
+                    // Add the item prefix and suffix to the column value
+                    var prefixedAndSuffixedValue = itemPrefix + columnValue + itemSuffix;
+
+                    // Push the prefixed and suffixed value to the array
+                    columnValues.push(prefixedAndSuffixedValue);
+                }
+            }
+
+            // Join the array elements into a custom-separated string
+            var customSeparatedList = columnValues.join(delimiter);
+
+            // Add the result prefix and suffix to the custom-separated list
+            var result = resultPrefix + customSeparatedList + resultSuffix;
+
+            // Display the custom-separated list in the output text area
+            outputTextArea.value = result;
+        }
+    </script>
+</head>
+<body>
+	<h1>Tools: Convert Column to Comma Separated List</h1>
+    <div class="input-group">
+        <label for="delimiter">Delimiter:</label>
+        <input type="text" id="delimiter" value="," placeholder="Enter delimiter">
+    </div>
+
+    <div class="input-group">
+        <label for="item-prefix">Item Prefix:</label>
+        <input type="text" id="item-prefix" value="" placeholder="Enter item prefix">
+    </div>
+
+    <div class="input-group">
+        <label for="item-suffix">Item Suffix:</label>
+        <input type="text" id="item-suffix" value="" placeholder="Enter item suffix">
+    </div>
+
+    <div class="input-group">
+        <label for="result-prefix">Result Prefix:</label>
+        <input type="text" id="result-prefix" value="" placeholder="Enter result prefix">
+    </div>
+
+    <div class="input-group">
+        <label for="result-suffix">Result Suffix:</label>
+        <input type="text" id="result-suffix" value="" placeholder="Enter result suffix">
+    </div>
+
+    <div class="auto-fill-group">
+        <input type="checkbox" id="auto-fill-checkbox" onclick="autoFill()">
+        <label for="auto-fill-checkbox">Auto fill DB with IN value</label>
+    </div>
+
+    <br>
+
+    <textarea id="input-text" rows="10" cols="50" placeholder="Paste input here"></textarea>
+
+    <br>
+
+    <button onclick="convertToCustomSeparatedList()">Convert to Custom Separated List</button>
+
+    <br>
+
+    <textarea id="output-text" rows="10" cols="50" placeholder="Output will appear here"></textarea>
+</body>
+</html>
